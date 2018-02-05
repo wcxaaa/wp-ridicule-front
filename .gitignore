@@ -62,3 +62,6 @@ typings/
 /.vscode/**
 *.lock
 package-*.json
+
+/src/configs/**
+!/src/configs/config.default.json
