@@ -10,7 +10,8 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "vue": "^2.5.2",
-    "vue-class-component": "^6.0.0"
+    "vue-class-component": "^6.0.0",
+    "vue-router": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.2.5",

@@ -1,6 +1,8 @@
 <template>
   <section class="app">
-    {{ msg }}
+    <main class="router">
+      <router-view></router-view>
+    </main>
   </section>
 </template>
 
@@ -14,7 +16,7 @@ import Component from 'vue-class-component'
   name: 'app'
 })
 export default class App extends Vue {
-  msg: string = 'Welcome to wp-ridicule-front!'
+
 }
 </script>
 
