@@ -9,29 +9,13 @@
 </style>
 
 <script lang="ts">
-import { Mixins, Component } from 'vue-mixin-decorator';
+import Vue from 'vue';
+import Component from 'vue-class-component';
 
-import { DataService } from '../mixins/data.service';
-
-@Component
-export default class Index extends Mixins<DataService>(DataService) {
-
-  created() {
-    this.testData();
-  }
-
-  async testData() {
-    let data = await this.getData('https://jsonplaceholder.typicode.com/posts/1', (boom) => {boom.title='boom'});
-    data.subscribe(
-      (next) => {
-        console.log(next);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  };
-
+@Component({
+  name: 'index'
+})
+export default class Index extends Vue {
 
 }
 
