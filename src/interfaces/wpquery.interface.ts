@@ -16,7 +16,7 @@ export interface IMenuQuery {
 export interface ICategoryQuery {
   [index: string]: string|number|boolean|undefined;
 
-  context?: string,
+  context?: "view"|"embed"|"edit",
   page?: number,
   per_page?: number,
   search?: string,
@@ -28,4 +28,28 @@ export interface ICategoryQuery {
   parent?: number,
   post?: number,
   slug?: string
+}
+
+export interface IPostQuery {
+  [index: string]: string|number|boolean|Date|undefined;
+  context?: "view"|"embed"|"edit",
+  page?: number,
+  per_page?: number,
+  search?: string,
+  after?: Date,
+  author?: string,
+  author_exclude?: string,
+  before?: Date,
+  exclude?: number,
+  include?: number,
+  offset?: number,
+  order?: "asc"|"desc",
+  orderby?: "author"|"date"|"id"|"include"|"modified"|"parent"|"relevance"|"slug"|"title",
+  slug?: string,
+  status?: string,
+  categories?: number,
+  categories_exclude?: number,
+  tags?: string,
+  tags_exclude?: string,
+  sticky?: boolean
 }

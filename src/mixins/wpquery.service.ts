@@ -3,7 +3,7 @@ import { Mixin, Mixins } from 'vue-mixin-decorator';
 
 import { DataService } from "./data.service";
 
-import { IMenuQuery, ICategoryQuery } from '../interfaces/wpquery.interface';
+import { IMenuQuery, ICategoryQuery, IPostQuery } from '../interfaces/wpquery.interface';
 import { Subscription } from 'rxjs/Subscription';
 
 import configs from '../configs/config';
@@ -80,6 +80,43 @@ export class WPQueryService extends Mixins<DataService>(DataService) {
     let category = await this.getData(token);
     let p: Promise<any[]> = new Promise((resolve, reject) => {
       category.subscribe(
+        (next) => {
+          resolve(next[0]);
+        },
+        (error) => {
+          reject([{error: error}]);
+        }
+      );
+    });
+    return await p;
+  }
+
+  async getPosts(q: IPostQuery = {}) {
+    let token = `${this.config.wp}/wp-json/wp/v2/posts/?`;
+    for (let key in q) {
+      token += `${key}=${q[key]}&`;
+    }
+
+    let posts = await this.getData(token);
+
+    let p: Promise<any[]> = new Promise((resolve, reject) => {
+      posts.subscribe(
+        (next) => {
+          resolve(next);
+        },
+        (error) => {
+          reject([{error: error}]);
+        }
+      );
+    });
+    return await p;
+  }
+
+  async getPost(id: number) {
+    let token = `${this.config.wp}/wp-json/wp-api-menus/v2/posts/${id}`;
+    let post = await this.getData(token);
+    let p: Promise<any[]> = new Promise((resolve, reject) => {
+      post.subscribe(
         (next) => {
           resolve(next[0]);
         },
