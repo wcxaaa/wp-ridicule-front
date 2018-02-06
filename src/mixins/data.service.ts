@@ -32,26 +32,26 @@ export class DataService extends Vue {
 
   };
 
-  loadConfig = async (uri: string) => {
-    let config = await this.getData(uri);
+  // loadConfig = async (uri: string) => {
+  //   let config = await this.getData(uri);
 
-    let p = new Promise((resolve, reject) => {
-      config.subscribe(
-        (next) => {
-          if (next.length > 0) {
-            resolve(next[0]);
-          } else {
-            console.log("Active config file not found");
-            reject("config_file_not_found");
-          }
-        },
-        (error) => {
-          reject(error);
-        }
-      )
-    });
+  //   let p = new Promise((resolve, reject) => {
+  //     config.subscribe(
+  //       (next) => {
+  //         if (next.length > 0) {
+  //           resolve(next[0]);
+  //         } else {
+  //           console.log("Active config file not found");
+  //           reject("config_file_not_found");
+  //         }
+  //       },
+  //       (error) => {
+  //         reject(error);
+  //       }
+  //     )
+  //   });
 
-    return await p;
-  };
+  //   return await p;
+  // };
 
 }
