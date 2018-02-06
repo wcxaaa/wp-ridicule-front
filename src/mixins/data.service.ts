@@ -16,10 +16,12 @@ export class DataService extends Vue {
       let response = await Axios.get(url);
 
       let data: any[] = response.data;
+
+      if (data instanceof Object && !(data instanceof Array)) {
+        data = [data];
+      }
+
       if (extractMethod) {
-        if (data instanceof Object && !(data instanceof Function)) {
-          data = [data];
-        }
         data.map(extractMethod);
       }
       return Observable.of(data).distinctUntilChanged();
@@ -29,8 +31,6 @@ export class DataService extends Vue {
     }
 
   };
-
-  configTried = 0;
 
   loadConfig = async (uri: string) => {
     let config = await this.getData(uri);
@@ -52,7 +52,6 @@ export class DataService extends Vue {
     });
 
     return await p;
-    
   };
 
 }
