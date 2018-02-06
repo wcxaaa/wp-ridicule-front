@@ -64,4 +64,4 @@ typings/
 package-*.json
 
 /src/configs/**
-!/src/configs/config.default.json
+!/src/configs/config.default.ts
