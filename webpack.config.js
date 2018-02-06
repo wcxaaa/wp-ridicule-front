@@ -100,11 +100,6 @@ module.exports = {
         from: resolve(__dirname, "./src/statics"),
         to: 'statics',
         ignore: [".gitkeep"]
-      },
-      {
-        from: resolve(__dirname, "./src/configs"),
-        to: 'configs',
-        ignore: [".gitkeep"]
       }
     ]),
 

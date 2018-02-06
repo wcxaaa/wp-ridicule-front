@@ -3,7 +3,7 @@ import { Mixin, Mixins } from 'vue-mixin-decorator';
 
 import { DataService } from "./data.service";
 
-import { IMenuQuery } from '../interfaces/wpquery.interface';
+import { IMenuQuery, ICategoryQuery } from '../interfaces/wpquery.interface';
 import { Subscription } from 'rxjs/Subscription';
 
 import configs from '../configs/config';
@@ -50,9 +50,8 @@ export class WPQueryService extends Mixins<DataService>(DataService) {
     return await p;
   }
 
-  async getCategories(q: any = {}) {
+  async getCategories(q: ICategoryQuery = {}) {
     let token = `${this.config.wp}/wp-json/wp/v2/categories/?`;
-
     for (let key in q) {
       token += `${key}=${q[key]}&`;
     }
@@ -75,6 +74,24 @@ export class WPQueryService extends Mixins<DataService>(DataService) {
     return await p;
 
   }
+
+  async getCategory(id: number) {
+    let token = `${this.config.wp}/wp-json/wp-api-menus/v2/categories/${id}`;
+    let category = await this.getData(token);
+    let p: Promise<any[]> = new Promise((resolve, reject) => {
+      category.subscribe(
+        (next) => {
+          resolve(next[0]);
+        },
+        (error) => {
+          reject([{error: error}]);
+        }
+      );
+    });
+    return await p;
+  }
+
+
 
   constructor(){super();};
 
