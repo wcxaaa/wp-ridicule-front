@@ -14,7 +14,6 @@
 </style>
 
 <script lang="ts">
-  import Vue from 'vue';
   import Component, { mixins } from 'vue-class-component';
   import { WPQueryService } from '../../mixins/wpquery.service';
 
