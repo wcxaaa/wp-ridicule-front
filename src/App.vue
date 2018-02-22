@@ -3,6 +3,7 @@
     <nav class="app">
       <ul>
         <li><router-link to="/categories">Category list</router-link></li>
+        <li><router-link to="/posts">Post list</router-link></li>
       </ul>
     </nav>
     <main class="router">

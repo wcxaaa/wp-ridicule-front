@@ -49,7 +49,6 @@
 
         // retrieve posts
         this.posts = await this.getPosts({categories: qcate});
-        console.log(this.posts);
       }
     }
 

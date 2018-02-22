@@ -4,6 +4,9 @@ import http404 from './components/http404.vue';
 import categoryList from './components/category/category-list.vue';
 import categoryDetail from './components/category/category-detail.vue';
 
+import postList from './components/post/post-list.vue';
+import postDetail from './components/post/post-detail.vue';
+
 export const appRoute = [
   {
     name: "root",
@@ -26,6 +29,18 @@ export const appRoute = [
     name: "categoryDetail",
     path: "/categories/:id",
     component: categoryDetail
+  },
+
+  {
+    name: "postList",
+    path: "/posts",
+    component: postList
+  },
+
+  {
+    name: "postDetail",
+    path: "/posts/:id",
+    component: postDetail
   },
 
   {
