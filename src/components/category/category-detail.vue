@@ -6,13 +6,20 @@
 
     <main>
       <article v-for="(post) of posts" v-bind:key="post.id">
-        <h2>{{ post.title.rendered }}</h2>
-        <small>{{ post.date }}</small>
-        <main v-html="post.content.rendered">
-        </main>
+        <header>
+          <h2>
+            <router-link v-bind:to="`/posts/${post.id}`">{{ post.title.rendered }}</router-link>
+          </h2>
+          <small>{{ post.date }}</small>
+        </header>
+
+        <main v-html="post.content.rendered"> </main>
+
         <footer>
           <ul>
-            <li v-for="(tag, index) of post.tags" v-bind:key="index">{{ tag }}</li>
+            <li v-for="(tag, index) of post.tags" v-bind:key="index">
+              {{ tag }}
+            </li>
           </ul>
         </footer>
       </article>
