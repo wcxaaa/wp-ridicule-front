@@ -10,26 +10,19 @@
 
 <script lang="ts">
 
-import { Mixins, Component } from 'vue-mixin-decorator';
+import Component, { mixins } from 'vue-class-component';
 
 import { WPQueryService } from './mixins/wpquery.service';
 
 @Component
-export default class App extends Mixins<WPQueryService>(WPQueryService) {
-
-  async main() {
-
-  }
-
-  constructor(){super();}
+export default class App extends mixins(WPQueryService) {
 
   created() {
-    this.main();
+
   }
 
-
-
 }
+
 </script>
 
 <style>

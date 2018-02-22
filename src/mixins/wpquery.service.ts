@@ -1,15 +1,14 @@
 import Vue from 'vue';
-import { Mixin, Mixins } from 'vue-mixin-decorator';
+import Component, { mixins } from 'vue-class-component';
 
 import { DataService } from "./data.service";
 
-import { IMenuQuery, ICategoryQuery, IPostQuery } from '../interfaces/wpquery.interface';
-import { Subscription } from 'rxjs/Subscription';
+import { IMenuQuery, ICategoryQuery, IPostQuery, IPageQuery } from '../interfaces/wpquery.interface';
 
 import configs from '../configs/config';
 
-@Mixin
-export class WPQueryService extends Mixins<DataService>(DataService) {
+@Component
+export class WPQueryService extends mixins(DataService) {
 
   config = configs[0];
 
@@ -128,8 +127,41 @@ export class WPQueryService extends Mixins<DataService>(DataService) {
     return await p;
   }
 
+  async getPages(q: IPageQuery = {}) {
+    let token = `${this.config.wp}/wp-json/wp/v2/pages/?`;
+    for (let key in q) {
+      token += `${key}=${q[key]}&`;
+    }
 
+    let pages = await this.getData(token);
 
-  constructor(){super();};
+    let p: Promise<any[]> = new Promise((resolve, reject) => {
+      pages.subscribe(
+        (next) => {
+          resolve(next);
+        },
+        (error) => {
+          reject([{error: error}]);
+        }
+      );
+    });
+    return await p;
+  }
+
+  async getPage(id: number) {
+    let token = `${this.config.wp}/wp-json/wp/v2/pages/?${id}`;
+    let page = await this.getData(token);
+    let p: Promise<any[]> = new Promise((resolve, reject) => {
+      page.subscribe(
+        (next) => {
+          resolve(next[0]);
+        },
+        (error) => {
+          reject([{error: error}]);
+        }
+      );
+    });
+    return await p;
+  }
 
 }

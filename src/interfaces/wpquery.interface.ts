@@ -53,3 +53,25 @@ export interface IPostQuery {
   tags_exclude?: string,
   sticky?: boolean
 }
+
+export interface IPageQuery {
+  [index: string]: string|number|boolean|Date|undefined;
+  context?: "view"|"embed"|"edit",
+  page?: number,
+  per_page?: number,
+  search?: string,
+  after?: Date,
+  author?: string,
+  author_exclude?: string,
+  before?: Date,
+  exclude?: number,
+  include?: number,
+  menu_order?: number,
+  offset?: number,
+  order?: "asc"|"desc",
+  orderby?: "author"|"date"|"id"|"include"|"modified"|"parent"|"relevance"|"slug"|"title"|"menu_order",
+  parent?: number,
+  parent_exclude?: number,
+  slug?: string,
+  status?: string,
+}
