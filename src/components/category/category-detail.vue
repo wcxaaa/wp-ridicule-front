@@ -1,6 +1,6 @@
 <template>
   <section>
-    dummy works
+    category-detail works
   </section>
 </template>
 
@@ -12,8 +12,10 @@
   import Vue from 'vue';
   import Component from 'vue-class-component';
 
-  @Component
-  export default class Dummy extends Vue {
+  @Component({
+    name: 'categoryDetail'
+  })
+  export default class CategoryDetail extends Vue {
 
   }
 </script>

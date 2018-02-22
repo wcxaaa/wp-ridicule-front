@@ -1,7 +1,9 @@
 <template>
   <section class="app">
     <nav class="app">
-      
+      <ul>
+        <li><router-link to="/categories">Category list</router-link></li>
+      </ul>
     </nav>
     <main class="router">
       <router-view></router-view>
@@ -9,7 +11,9 @@
   </section>
 </template>
 
+<style lang="scss" scoped>
 
+</style>
 
 <script lang="ts">
 
@@ -17,16 +21,13 @@ import Component, { mixins } from 'vue-class-component';
 
 import { WPQueryService } from './mixins/wpquery.service';
 
-@Component
+@Component({
+  name: 'app'
+})
 export default class App extends mixins(WPQueryService) {
 
   async main() {
-    let menus = await this.getMenuItems({id: 3});
-    console.log(menus);
-    menus = await this.getMenuItems({location: 'top'});
-    console.log(menus);
-    menus = await this.getMenuItems({});
-    console.log(menus);
+    
   }
 
   created() {
@@ -36,7 +37,3 @@ export default class App extends mixins(WPQueryService) {
 }
 
 </script>
-
-<style>
-
-</style>

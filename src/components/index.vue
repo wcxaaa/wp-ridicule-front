@@ -1,11 +1,10 @@
 <template>
-
-  <section>
-    index works
+  <section class="index">
+    home sweet home
   </section>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 
 </style>
 
@@ -14,7 +13,9 @@
 import Component, { mixins } from 'vue-class-component';
 import { WPQueryService } from '../mixins/wpquery.service';
 
-@Component
+@Component({
+  name: 'index'
+})
 export default class Index extends mixins(WPQueryService) {
 
   async main() {
