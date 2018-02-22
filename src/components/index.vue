@@ -1,4 +1,5 @@
 <template>
+
   <section>
     index works
   </section>
@@ -17,8 +18,8 @@ import { WPQueryService } from '../mixins/wpquery.service';
 export default class Index extends mixins(WPQueryService) {
 
   async main() {
-    let cate = await this.getPage(2);
-    console.log(cate);
+    // let cate = await this.getPage(2);
+    // console.log(cate);
   }
 
   created() {

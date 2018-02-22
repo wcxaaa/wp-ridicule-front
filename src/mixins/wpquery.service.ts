@@ -12,12 +12,8 @@ export class WPQueryService extends mixins(DataService) {
 
   config = configs[0];
 
-  async getMenu(q: IMenuQuery = {}): Promise<any> {
+  async getMenus(): Promise<any> {
     let token = `${this.config.wp}/wp-json/wp-api-menus/v2/menus/?`;
-
-    for (let key in q) {
-      token += `${key}=${q[key]}&`;
-    }
 
     let menus = await this.getData(token);
     let p: Promise<any> = new Promise((resolve, reject) => {
@@ -33,20 +29,55 @@ export class WPQueryService extends mixins(DataService) {
     return await p;
   };
 
-  async getMenuItems(id: number) {
-    let token = `${this.config.wp}/wp-json/wp-api-menus/v2/menus/${id}`;
-    let menu = await this.getData(token);
-    let p: Promise<any[]> = new Promise((resolve, reject) => {
-      menu.subscribe(
-        (next) => {
-          resolve(next[0].items);
-        },
-        (error) => {
-          reject([{error: error}]);
-        }
-      );
-    });
-    return await p;
+  async getMenuItems(q: IMenuQuery = {}) {
+
+    let token: string;
+
+    if (q.id) {
+      // if q contains key id, then it activates query-by-id mode
+      token = `${this.config.wp}/wp-json/wp-api-menus/v2/menus/${q.id}`;
+
+      let menu = await this.getData(token);
+      let p: Promise<any[]> = new Promise((resolve, reject) => {
+        menu.subscribe(
+          (next) => {
+            if (next[0]) {
+              resolve(next[0].items);
+            } else {
+              resolve([]);
+            }
+          },
+          (error) => {
+            reject([{error: error}]);
+          }
+        );
+      });
+      return await p;
+
+
+    } else if (q.location && q.location.length > 0) {
+      // if q does not contain key id, then we enter query-by-location mode
+      token = `${this.config.wp}/wp-json/wp-api-menus/v2/menu-locations/${q.location}`;
+
+      let menu = await this.getData(token);
+      let p: Promise<any[]> = new Promise((resolve, reject) => {
+        menu.subscribe(
+          (next) => {
+            resolve(next);
+          },
+          (error) => {
+            reject([{error: error}]);
+          }
+        );
+      });
+      return await p;
+
+    } else {
+      console.error("Neither id nor location is specified, so we cannot perform query based on this token.");
+      return null;
+    }
+    
+
   }
 
   async getCategories(q: ICategoryQuery = {}) {
