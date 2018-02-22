@@ -106,15 +106,15 @@ export class WPQueryService extends mixins(DataService) {
   }
 
   async getCategory(id: number) {
-    let token = `${this.config.wp}/wp-json/wp-api-menus/v2/categories/${id}`;
+    let token = `${this.config.wp}/wp-json/wp/v2/categories/${id}`;
     let category = await this.getData(token);
-    let p: Promise<any[]> = new Promise((resolve, reject) => {
+    let p: Promise<any> = new Promise((resolve, reject) => {
       category.subscribe(
         (next) => {
           resolve(next[0]);
         },
         (error) => {
-          reject([{error: error}]);
+          reject({error: error});
         }
       );
     });
@@ -123,9 +123,27 @@ export class WPQueryService extends mixins(DataService) {
 
   async getPosts(q: IPostQuery = {}) {
     let token = `${this.config.wp}/wp-json/wp/v2/posts/?`;
+
     for (let key in q) {
-      token += `${key}=${q[key]}&`;
+
+      // dealing with number[] or string[] type value
+      if (key === 'categories'||'categories_exclude') {
+        let values: number[] | string[] = q[key] as number[] | string[];
+        let qString = "";
+
+        for (let val of values) {
+          qString += val + ",";
+        }
+        // remove the last ','
+        qString = qString.substring(0, qString.length - 1);
+        token += `${key}=${qString}&`;
+      } else {
+        token += `${key}=${q[key]}&`;
+      }
+
     }
+
+
 
     let posts = await this.getData(token);
 
@@ -143,15 +161,15 @@ export class WPQueryService extends mixins(DataService) {
   }
 
   async getPost(id: number) {
-    let token = `${this.config.wp}/wp-json/wp-api-menus/v2/posts/${id}`;
+    let token = `${this.config.wp}/wp-json/wp/v2/posts/${id}`;
     let post = await this.getData(token);
-    let p: Promise<any[]> = new Promise((resolve, reject) => {
+    let p: Promise<any> = new Promise((resolve, reject) => {
       post.subscribe(
         (next) => {
           resolve(next[0]);
         },
         (error) => {
-          reject([{error: error}]);
+          reject({error: error});
         }
       );
     });
@@ -182,13 +200,13 @@ export class WPQueryService extends mixins(DataService) {
   async getPage(id: number) {
     let token = `${this.config.wp}/wp-json/wp/v2/pages/?${id}`;
     let page = await this.getData(token);
-    let p: Promise<any[]> = new Promise((resolve, reject) => {
+    let p: Promise<any> = new Promise((resolve, reject) => {
       page.subscribe(
         (next) => {
           resolve(next[0]);
         },
         (error) => {
-          reject([{error: error}]);
+          reject({error: error});
         }
       );
     });
