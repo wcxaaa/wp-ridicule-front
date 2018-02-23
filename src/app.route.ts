@@ -7,6 +7,9 @@ import categoryDetail from './components/category/category-detail.vue';
 import postList from './components/post/post-list.vue';
 import postDetail from './components/post/post-detail.vue';
 
+// pages
+import pageDefault from './components/page/page-default.vue';
+
 export const appRoute = [
   {
     name: "root",
@@ -41,6 +44,12 @@ export const appRoute = [
     name: "postDetail",
     path: "/posts/:id",
     component: postDetail
+  },
+
+  {
+    name: "page-default",
+    path: "/pages/default/:id",
+    component: pageDefault
   },
 
   {
