@@ -18,4 +18,6 @@ npm run build
 ## Wordpress plugins required
 [WP API Menus](https://wordpress.org/plugins/wp-api-menus/)
 
+[REST API – Filter Fields](https://wordpress.org/plugins/rest-api-filter-fields/)
+
 For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).

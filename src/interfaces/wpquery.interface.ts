@@ -6,7 +6,7 @@ export interface IMenuQuery {
 }
 
 export interface ICategoryQuery {
-  [index: string]: string|number|boolean|undefined;
+  [index: string]: string|string[]|number|boolean|undefined;
 
   context?: "view"|"embed"|"edit",
   page?: number,
@@ -19,7 +19,8 @@ export interface ICategoryQuery {
   hide_empty?: boolean,
   parent?: number,
   post?: number,
-  slug?: string
+  slug?: string,
+  fields?: string[]
 }
 
 export interface IPostQuery {
@@ -43,11 +44,12 @@ export interface IPostQuery {
   categories_exclude?: number[],
   tags?: string[],
   tags_exclude?: string[],
-  sticky?: boolean
+  sticky?: boolean,
+  fields?: string[]
 }
 
 export interface IPageQuery {
-  [index: string]: string|number|boolean|Date|undefined;
+  [index: string]: string|string[]|number|boolean|Date|undefined;
   context?: "view"|"embed"|"edit",
   page?: number,
   per_page?: number,
@@ -66,4 +68,5 @@ export interface IPageQuery {
   parent_exclude?: number,
   slug?: string,
   status?: string,
+  fields?: string[]
 }

@@ -83,7 +83,22 @@ export class WPQueryService extends mixins(DataService) {
   async getCategories(q: ICategoryQuery = {}) {
     let token = `${this.config.wp}/wp-json/wp/v2/categories/?`;
     for (let key in q) {
-      token += `${key}=${q[key]}&`;
+
+      // dealing with number[] or string[] type value
+      if (key === 'fields') {
+        let values: number[] | string[] = q[key] as number[] | string[];
+        let qString = "";
+
+        for (let val of values) {
+          qString += val + ",";
+        }
+        // remove the last ','
+        qString = qString.substring(0, qString.length - 1);
+        token += `${key}=${qString}&`;
+      } else {
+        token += `${key}=${q[key]}&`;
+      }
+
     }
 
     let categories = await this.getData(token);
@@ -127,7 +142,7 @@ export class WPQueryService extends mixins(DataService) {
     for (let key in q) {
 
       // dealing with number[] or string[] type value
-      if (key === 'categories'||'categories_exclude') {
+      if (key === 'categories'||'categories_exclude'||'tags'||'tags_exclude'||'fields') {
         let values: number[] | string[] = q[key] as number[] | string[];
         let qString = "";
 
@@ -179,7 +194,22 @@ export class WPQueryService extends mixins(DataService) {
   async getPages(q: IPageQuery = {}) {
     let token = `${this.config.wp}/wp-json/wp/v2/pages/?`;
     for (let key in q) {
-      token += `${key}=${q[key]}&`;
+
+      // dealing with number[] or string[] type value
+      if (key === 'fields') {
+        let values: number[] | string[] = q[key] as number[] | string[];
+        let qString = "";
+
+        for (let val of values) {
+          qString += val + ",";
+        }
+        // remove the last ','
+        qString = qString.substring(0, qString.length - 1);
+        token += `${key}=${qString}&`;
+      } else {
+        token += `${key}=${q[key]}&`;
+      }
+
     }
 
     let pages = await this.getData(token);
@@ -198,7 +228,7 @@ export class WPQueryService extends mixins(DataService) {
   }
 
   async getPage(id: number) {
-    let token = `${this.config.wp}/wp-json/wp/v2/pages/?${id}`;
+    let token = `${this.config.wp}/wp-json/wp/v2/pages/${id}`;
     let page = await this.getData(token);
     let p: Promise<any> = new Promise((resolve, reject) => {
       page.subscribe(
