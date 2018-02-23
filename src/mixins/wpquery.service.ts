@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import Component, { mixins } from 'vue-class-component';
 
 import { DataService } from "./data.service";

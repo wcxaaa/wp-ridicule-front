@@ -22,12 +22,6 @@
   })
   export default class PageDefault extends mixins(WPQueryService) {
 
-    // An id for level 2 nav menu composition
-    // on default page, we have a default parent id 0, which represents pages
-    // that have no parent.
-    // Also on default pages, level 2 nav menu is not likely to be shown.
-    parentID = 0;
-
     page = {
       title: {},
       content: {}

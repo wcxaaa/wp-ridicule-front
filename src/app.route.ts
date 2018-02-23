@@ -9,6 +9,7 @@ import postDetail from './components/post/post-detail.vue';
 
 // pages
 import pageDefault from './components/page/page-default.vue';
+import pageWashMachine from './components/page/page-wash-machine.vue';
 
 export const appRoute = [
   {
@@ -47,9 +48,15 @@ export const appRoute = [
   },
 
   {
-    name: "page-default",
+    name: "pageDefault",
     path: "/pages/default/:id",
     component: pageDefault
+  },
+
+  {
+    name: "pageWashMachine",
+    path: "/pages/wash-machine/:id",
+    component: pageWashMachine
   },
 
   {

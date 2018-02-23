@@ -7,7 +7,7 @@
       </ul>
     </nav>
     <main class="router">
-      <router-view></router-view>
+      <router-view :key="$route.fullPath"></router-view>
     </main>
   </section>
 </template>
