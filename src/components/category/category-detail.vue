@@ -34,11 +34,11 @@
 
           <main v-html="post.excerpt.rendered"> </main>
 
-          <footer v-if="post.tagNameList.length > 0">
+          <footer v-if="post.tags.length > 0">
             <h1>Tags:</h1>
             <ul>
-              <li v-for="(tagName, index) of post.tagNameList" v-bind:key="index">
-                {{ tagName }}
+              <li v-for="(tag, index) of post.tags" v-bind:key="index">
+                <router-link v-bind:to="`/tags/${tag.id}`">{{ tag.name }}</router-link> 
               </li>
             </ul>
           </footer>
@@ -66,7 +66,6 @@
     cateName = "Loading...";
     posts: any[] = [];
     subCategories: any[] = [];
-    tagNameList: string[] = [];
 
     async getSubCategories(parentID: number) {
       let subCats = await this.getCategories({parent: parentID, fields: ["id", "name"]});
@@ -79,16 +78,26 @@
       Converts tag id list to string list
     */
     async getTagNames(tagIndexList: number[]) {
-      let tagNameList: string[] = [];
+      // let tagNameList: string[] = [];
+
+      let tagsWithName: any[] = [];
+      // single tag e.g.
+      // {
+      //   id: 0,
+      //   name: "喧嚣",
+      // }
+
       for (let i = 0; i < tagIndexList.length; i++) {
+        tagsWithName[i] = {};
+        tagsWithName[i].id = tagIndexList[i];
         let tag = await this.getTag(tagIndexList[i]);
         if (tag) {
-          tagNameList[i] = tag.name;
+          tagsWithName[i].name = tag.name;
         } else {
-          tagNameList[i] = "(error not found)";
+          tagsWithName[i].name = "(error not found)";
         }
       }
-      return tagNameList;
+      return tagsWithName;
     }
 
     async main() {
@@ -111,7 +120,7 @@
 
         // get post tag names
         for (let post of posts) {
-          post.tagNameList = await this.getTagNames(post.tags);
+          post.tags = await this.getTagNames(post.tags);
         }
 
         this.posts = posts;

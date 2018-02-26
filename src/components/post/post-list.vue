@@ -32,7 +32,7 @@
     posts: any[] = [];
 
     async main() {
-      this.posts = await this.getPosts();
+      this.posts = await this.getPosts({fields: ["id", "title", "excerpt"]});
     }
 
     created() {
