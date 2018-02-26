@@ -32,12 +32,13 @@
             <small>{{ post.date }}</small>
           </header>
 
-          <main v-html="post.content.rendered"> </main>
+          <main v-html="post.excerpt.rendered"> </main>
 
-          <footer>
+          <footer v-if="post.tagNameList.length > 0">
+            <h1>Tags:</h1>
             <ul>
-              <li v-for="(tag, index) of post.tags" v-bind:key="index">
-                {{ tag }}
+              <li v-for="(tagName, index) of post.tagNameList" v-bind:key="index">
+                {{ tagName }}
               </li>
             </ul>
           </footer>
@@ -65,12 +66,29 @@
     cateName = "Loading...";
     posts: any[] = [];
     subCategories: any[] = [];
+    tagNameList: string[] = [];
 
     async getSubCategories(parentID: number) {
       let subCats = await this.getCategories({parent: parentID, fields: ["id", "name"]});
       if (subCats.length > 0) {
         this.subCategories = subCats;
       }
+    }
+
+    /**
+      Converts tag id list to string list
+    */
+    async getTagNames(tagIndexList: number[]) {
+      let tagNameList: string[] = [];
+      for (let i = 0; i < tagIndexList.length; i++) {
+        let tag = await this.getTag(tagIndexList[i]);
+        if (tag) {
+          tagNameList[i] = tag.name;
+        } else {
+          tagNameList[i] = "(error not found)";
+        }
+      }
+      return tagNameList;
     }
 
     async main() {
@@ -89,7 +107,15 @@
         qcate.push(cateID);
 
         // retrieve posts
-        this.posts = await this.getPosts({categories: qcate});
+        let posts = await this.getPosts({categories: qcate, field: ["id", "title", "excerpt"]});
+
+        // get post tag names
+        for (let post of posts) {
+          post.tagNameList = await this.getTagNames(post.tags);
+        }
+
+        this.posts = posts;
+
       }
     }
 

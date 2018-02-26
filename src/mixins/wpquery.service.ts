@@ -2,7 +2,7 @@ import Component, { mixins } from 'vue-class-component';
 
 import { DataService } from "./data.service";
 
-import { IMenuQuery, ICategoryQuery, IPostQuery, IPageQuery } from '../interfaces/wpquery.interface';
+import { IMenuQuery, ICategoryQuery, IPostQuery, IPageQuery, ITagQuery } from '../interfaces/wpquery.interface';
 
 import configs from '../configs/config';
 
@@ -231,6 +231,58 @@ export class WPQueryService extends mixins(DataService) {
     let page = await this.getData(token);
     let p: Promise<any> = new Promise((resolve, reject) => {
       page.subscribe(
+        (next) => {
+          resolve(next[0]);
+        },
+        (error) => {
+          reject({error: error});
+        }
+      );
+    });
+    return await p;
+  }
+
+  async getTags(q: ITagQuery = {}) {
+    let token = `${this.config.wp}/wp-json/wp/v2/tags/?`;
+    for (let key in q) {
+
+      // dealing with number[] or string[] type value
+      if (key === 'fields') {
+        let values: number[] | string[] = q[key] as number[] | string[];
+        let qString = "";
+
+        for (let val of values) {
+          qString += val + ",";
+        }
+        // remove the last ','
+        qString = qString.substring(0, qString.length - 1);
+        token += `${key}=${qString}&`;
+      } else {
+        token += `${key}=${q[key]}&`;
+      }
+
+    }
+
+    let tags = await this.getData(token);
+
+    let p: Promise<any[]> = new Promise((resolve, reject) => {
+      tags.subscribe(
+        (next) => {
+          resolve(next);
+        },
+        (error) => {
+          reject([{error: error}]);
+        }
+      );
+    });
+    return await p;
+  }
+
+  async getTag(id: number) {
+    let token = `${this.config.wp}/wp-json/wp/v2/tags/${id}`;
+    let tag = await this.getData(token);
+    let p: Promise<any> = new Promise((resolve, reject) => {
+      tag.subscribe(
         (next) => {
           resolve(next[0]);
         },

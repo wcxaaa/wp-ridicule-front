@@ -42,8 +42,8 @@ export interface IPostQuery {
   status?: string,
   categories?: number[],
   categories_exclude?: number[],
-  tags?: string[],
-  tags_exclude?: string[],
+  tags?: number[],
+  tags_exclude?: number[],
   sticky?: boolean,
   fields?: string[]
 }
@@ -68,5 +68,22 @@ export interface IPageQuery {
   parent_exclude?: number,
   slug?: string,
   status?: string,
+  fields?: string[]
+}
+
+export interface ITagQuery {
+  [index: string]: string|string[]|number|boolean|Date|undefined;
+  context?: "view"|"embed"|"edit",
+  page?: number,
+  per_page?: number,
+  search?: string,
+  exclude?: number,
+  include?: number,
+  offset?: number,
+  order?: "asc"|"desc",
+  orderby?: "author"|"date"|"id"|"include"|"modified"|"parent"|"relevance"|"slug"|"title"|"menu_order",
+  hide_empty?: boolean,
+  post?: string,
+  slug?: string,
   fields?: string[]
 }
