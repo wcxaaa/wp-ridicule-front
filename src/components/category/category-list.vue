@@ -1,6 +1,6 @@
 <template>
   <section>
-    <h1>category list</h1>
+    <h1>category list (top level)</h1>
     <ul>
       <li v-for="(cate) of categories" v-bind:key="cate.id">
         <router-link v-bind:to="`/categories/${cate.id}`">{{ cate.name }}</router-link>
@@ -25,7 +25,7 @@
     categories: any[] = [];
 
     async main() {
-      this.categories = await this.getCategories();
+      this.categories = await this.getCategories({parent: 0, fields: ["id", "name"]});
     }
 
     created() {

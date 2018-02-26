@@ -1,30 +1,51 @@
 <template>
-  <section>
-    <header>
-      <h1>Posts about {{ cateName }}</h1>
-    </header>
+  <section class="categoryDetail">
 
-    <main>
-      <article v-for="(post) of posts" v-bind:key="post.id">
-        <header>
-          <h2>
-            <router-link v-bind:to="`/posts/${post.id}`">{{ post.title.rendered }}</router-link>
-          </h2>
-          <small>{{ post.date }}</small>
-        </header>
+    <div class="sub" v-if="subCategories.length > 0">
+      <header>
+        <h1>subCategories of {{ cateName }}</h1>
+      </header>
 
-        <main v-html="post.content.rendered"> </main>
+      <!-- Show sub category section if there is a sub category -->
+      <main>
+        <ul>
+          <li v-for="(subcats) of subCategories" v-bind:key="subcats.id">
+            <router-link v-bind:to="`/categories/${subcats.id}`">{{ subcats.name }}</router-link>
+          </li>
+        </ul>
+      </main>
 
-        <footer>
-          <ul>
-            <li v-for="(tag, index) of post.tags" v-bind:key="index">
-              {{ tag }}
-            </li>
-          </ul>
-        </footer>
-      </article>
-    </main>
-    
+    </div>
+
+    <div class="posts" v-if="posts.length > 0">
+      <header>
+        <h1>Posts about {{ cateName }}</h1>
+      </header>
+
+      <main>
+        <article v-for="(post) of posts" v-bind:key="post.id">
+
+          <header>
+            <h2>
+              <router-link v-bind:to="`/posts/${post.id}`">{{ post.title.rendered }}</router-link>
+            </h2>
+            <small>{{ post.date }}</small>
+          </header>
+
+          <main v-html="post.content.rendered"> </main>
+
+          <footer>
+            <ul>
+              <li v-for="(tag, index) of post.tags" v-bind:key="index">
+                {{ tag }}
+              </li>
+            </ul>
+          </footer>
+
+        </article>
+      </main>
+    </div>
+
   </section>
 </template>
 
@@ -43,9 +64,22 @@
 
     cateName = "Loading...";
     posts: any[] = [];
+    subCategories: any[] = [];
+
+    async getSubCategories(parentID: number) {
+      let subCats = await this.getCategories({parent: parentID, fields: ["id", "name"]});
+      if (subCats.length > 0) {
+        this.subCategories = subCats;
+      }
+    }
 
     async main() {
       let cateID: number = parseInt(this.$route.params.id);
+
+      // get sub categories
+      await this.getSubCategories(cateID);
+
+      // get posts under current category
       let category = await this.getCategory(cateID);
       if (category) {
         this.cateName = category.name;
